@@ -7,25 +7,24 @@ import threading
 
 
 def compute_height(num_nodes, parent_indices):
-    mezgls = [[] for _ in range(num_nodes)]
-    sakne = None
+    nodes = [[] for _ in range(num_nodes)]
+    root = None
     for i, parent_index in enumerate(parent_indices):
         if parent_index == -1:
-            sakne = i
+            root = i
         else:
-            mezgls[parent_index].append(i)
-    max_height = calculate_max_node_height(mezgls, sakne)
+            nodes[parent_index].append(i)
+    max_height = calculate_max_node_height(nodes, root)
     return max_height
 
 
-
-def calculate_max_node_height(mezgls, sakne):
-    stack = [(sakne, 1)]
+def calculate_max_node_height(nodes, root):
+    stack = [(root, 1)]
     max_height = 1
     while stack:
-        mezgls, height = stack.pop()
+        node, height = stack.pop()
         max_height = max(max_height, height)
-        for child in nodes[mezgls]:
+        for child in nodes[node]:
             stack.append((child, height + 1))
     return max_height
 
