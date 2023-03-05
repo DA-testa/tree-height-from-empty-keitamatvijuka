@@ -1,33 +1,49 @@
 # python3
+#Keita Matvijuka 13. grupa Apl. nr. 221RDB506
 
 import sys
 import threading
-import numpy
+
+def compute_height(num_nodes, parent_indices):
+    mezgli = [[] for _ in range(num_nodes)]
+    sakne = None
+    for i, parent_index in enumerate(parent_indices):
+        if parent_index == -1:
+            sakne = i
+        else:
+            mezgli[parent_index].append(i)
+    max_height = calculate_max_node_height(mezgli, sakne)
+    return max_height
 
 
-def compute_height(n, parents):
-    # Write this function
-    max_height = 0
-    # Your code here
+def calculate_max_node_height(mezgli, sakne):
+    stack = [(sakne, 1)]
+    max_height = 1
+    while stack:
+        node, height = stack.pop()
+        max_height = max(max_height, height)
+        for child in mezgli[node]:
+            stack.append((child, height + 1))
     return max_height
 
 
 def main():
-    # implement input form keyboard and from files
-    
-    # let user input file name to use, don't allow file names with letter a
-    # account for github input inprecision
-    
-    # input number of elements
-    # input values in one variable, separate with space, split these values in an array
-    # call the function and output it's result
-    pass
+    user_input = input()
+    if "a" not in user_input:
+        if "I" in user_input:
+            num_nodes = int(input())
+            parent_indices = list(map(int, input().split()))
+            max_height = compute_height(num_nodes, parent_indices)
+            print(max_height)
+        elif "F" in user_input:
+            file_path = "test/" + input()
+            with open(file_path, 'r') as f:
+                num_nodes = int(f.readline().strip())
+                parent_indices = list(map(int, f.readline().strip().split()))
+                max_height = compute_height(num_nodes, parent_indices)
+                print(max_height)
 
-# In Python, the default limit on recursion depth is rather low,
-# so raise it here for this problem. Note that to take advantage
-# of bigger stack, we have to launch the computation in a new thread.
-sys.setrecursionlimit(10**7)  # max depth of recursion
-threading.stack_size(2**27)   # new thread will get stack of such size
+
+sys.setrecursionlimit(10**7)
+threading.stack_size(2**27)
 threading.Thread(target=main).start()
-main()
-# print(numpy.array([1,2,3]))
