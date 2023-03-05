@@ -1,30 +1,28 @@
 # python3
 #Keita Matvijuka 13. grupa Apl. nr. 221RDB506
 
-
 import sys
 import threading
 
-
 def compute_height(num_nodes, parent_indices):
-    nodes = [[] for _ in range(num_nodes)]
-    root = None
+    mezgli = [[] for _ in range(num_nodes)]
+    sakne = None
     for i, parent_index in enumerate(parent_indices):
         if parent_index == -1:
-            root = i
+            sakne = i
         else:
-            nodes[parent_index].append(i)
-    max_height = calculate_max_node_height(nodes, root)
+            mezgli[parent_index].append(i)
+    max_height = calculate_max_node_height(mezgli, sakne)
     return max_height
 
 
-def calculate_max_node_height(nodes, root):
-    stack = [(root, 1)]
+def calculate_max_node_height(mezgli, sakne):
+    stack = [(sakne, 1)]
     max_height = 1
     while stack:
         node, height = stack.pop()
         max_height = max(max_height, height)
-        for child in nodes[node]:
+        for child in mezgli[node]:
             stack.append((child, height + 1))
     return max_height
 
